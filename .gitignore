@@ -1,0 +1,13 @@
+# 飞书凭据（敏感信息）
+config.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/

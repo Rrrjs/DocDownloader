@@ -1,0 +1,22 @@
+{
+    "feishu": {
+        "app_id": "",
+        "app_secret": "",
+        "access_token_type": "user",
+        "user_access_token": "",
+        "refresh_token": ""
+    },
+    "export_types": {
+        "doc": "docx",
+        "docx": "docx",
+        "sheet": "xlsx",
+        "bitable": "xlsx",
+        "mindnote": "pdf"
+    },
+    "base_url": "https://open.feishu.cn/open-apis",
+    "poll_interval_seconds": 2,
+    "poll_timeout_seconds": 300,
+    "conflict_policy": "overwrite",
+    "multi_thread": true,
+    "thread_count": 10
+}
