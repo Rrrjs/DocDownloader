@@ -56,7 +56,7 @@ def download_with_retry(client: FeishuClient, item: dict, file_extension: str,
                         poll_interval: int, poll_timeout: int,
                         token_type: str, feishu_cfg: dict,
                         config_path: str,
-                        reauth_lock: threading.Lock | None = None) -> tuple[bool, str, int, str]:
+                        reauth_lock=None) -> tuple[bool, str, int, str]:
     """带重试的下载单个文件，返回 (成功?, 文件名, 大小, 警告)"""
     token = item["token"]
     doc_type = item["doc_type"]
