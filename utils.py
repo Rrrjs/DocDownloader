@@ -1,5 +1,10 @@
 import os
 import re
+import threading
+
+
+_PATH_LOCK = threading.Lock()
+_RESERVED_PATHS: set[str] = set()
 
 
 # Windows 文件名非法字符
@@ -26,28 +31,39 @@ def resolve_save_path(save_dir: str, file_name: str,
     - skip: 返回 None 跳过
     """
     path = os.path.join(save_dir, file_name)
+    normalized_path = os.path.normcase(os.path.abspath(path))
 
-    if not os.path.exists(path):
-        return path
-
-    if policy == "overwrite":
-        print(f"  ⚠ 文件已存在，将覆盖: {file_name}")
-        return path
-
-    if policy == "skip":
-        print(f"  ⏭ 文件已存在，跳过: {file_name}")
-        return None
-
-    # rename 策略
-    base, ext = os.path.splitext(file_name)
-    counter = 1
-    while True:
-        new_name = f"{base}({counter}){ext}"
-        path = os.path.join(save_dir, new_name)
-        if not os.path.exists(path):
-            print(f"  ⚠ 文件已存在，重命名为: {new_name}")
+    with _PATH_LOCK:
+        if policy == "overwrite":
+            if os.path.exists(path):
+                print(f"  ⚠ 文件已存在，将覆盖: {file_name}")
+            _RESERVED_PATHS.add(normalized_path)
             return path
-        counter += 1
+
+        if policy == "skip":
+            if os.path.exists(path) or normalized_path in _RESERVED_PATHS:
+                print(f"  ⏭ 文件已存在，跳过: {file_name}")
+                return None
+            _RESERVED_PATHS.add(normalized_path)
+            return path
+
+        if not os.path.exists(path) and normalized_path not in _RESERVED_PATHS:
+            _RESERVED_PATHS.add(normalized_path)
+            return path
+
+        # rename 策略
+        base, ext = os.path.splitext(file_name)
+        counter = 1
+        while True:
+            new_name = f"{base}({counter}){ext}"
+            path = os.path.join(save_dir, new_name)
+            normalized_path = os.path.normcase(os.path.abspath(path))
+            if (not os.path.exists(path)
+                    and normalized_path not in _RESERVED_PATHS):
+                _RESERVED_PATHS.add(normalized_path)
+                print(f"  ⚠ 文件已存在，重命名为: {new_name}")
+                return path
+            counter += 1
 
 
 def ensure_extension(file_name: str, file_extension: str) -> str:

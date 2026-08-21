@@ -8,6 +8,9 @@ DEFAULTS = {
     "base_url": "https://open.feishu.cn/open-apis",
     "multi_thread": False,
     "thread_count": 3,
+    "requests_per_minute": 100,
+    "request_window_seconds": 60,
+    "delete_source_after_success": False,
 }
 
 VALID_POLICIES = ("rename", "overwrite", "skip")

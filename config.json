@@ -18,5 +18,8 @@
     "poll_timeout_seconds": 300,
     "conflict_policy": "overwrite",
     "multi_thread": true,
-    "thread_count": 10
+    "thread_count": 20,
+    "requests_per_minute": 100,
+    "request_window_seconds": 60,
+    "delete_source_after_success": true
 }
