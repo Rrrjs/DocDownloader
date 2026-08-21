@@ -1,6 +1,11 @@
 扫描文件夹中的 `.url` 快捷方式，识别文件类型，调用飞书导出 API 批量下载文档。
 支持：doc、docx、sheet、bitable、mindnote
 
+开发者：Rrrjs
+
+GUI预览
+![image](https://raw.githubusercontent.com/Rrrjs/DocDownloader/refs/heads/main/preview/screenshot.png)
+
 ## 文件结构
 
 | 文件 | 说明 |
